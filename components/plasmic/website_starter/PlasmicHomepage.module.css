@@ -31,8 +31,8 @@
   grid-row-gap: 16px;
   align-content: flex-start;
   justify-items: center;
-  position: relative;
   margin-bottom: 0px;
+  position: relative;
   grid-column-start: 1 !important;
   grid-column-end: -1 !important;
   grid-template-columns:
@@ -53,11 +53,11 @@
   }
 }
 .h1 {
-  position: relative;
   width: 100%;
   height: auto;
-  margin-bottom: 0px;
   font-family: "Ubuntu", sans-serif;
+  margin-bottom: 0px;
+  position: relative;
   min-width: 0;
 }
 .httpRestApiFetcher__x8C9:global(.__wab_instance) {

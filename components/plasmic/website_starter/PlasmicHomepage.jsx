@@ -17,12 +17,18 @@ import {
   deriveRenderOpts,
   generateStateOnChangeProp,
   generateStateValueProp,
+  set as $stateSet,
   useDollarState
 } from "@plasmicapp/react-web";
 import {
   DataCtxReader as DataCtxReader__,
   useDataEnv
 } from "@plasmicapp/react-web/lib/host";
+import { usePlasmicDataSourceContext } from "@plasmicapp/data-sources-context";
+import {
+  executePlasmicDataOp,
+  usePlasmicInvalidate
+} from "@plasmicapp/react-web/lib/data-sources";
 import { DataFetcher } from "@plasmicpkgs/plasmic-query";
 import { AntdInputNumber } from "@plasmicpkgs/antd5/skinny/registerInput";
 import Button from "../../Button"; // plasmic-import: y8cRQpExkeMy/component
@@ -85,6 +91,8 @@ function PlasmicHomepage__RenderFunc(props) {
     $queries: {},
     $refs
   });
+  const dataSourcesCtx = usePlasmicDataSourceContext();
+  const plasmicInvalidate = usePlasmicInvalidate();
   return (
     <React.Fragment>
       <Head></Head>
@@ -131,6 +139,21 @@ function PlasmicHomepage__RenderFunc(props) {
             </h1>
           </section>
           <DataFetcher
+            body={(() => {
+              try {
+                return {
+                  value: $state.numberInput.value
+                };
+              } catch (e) {
+                if (
+                  e instanceof TypeError ||
+                  e?.plasmicType === "PlasmicUndefinedDataError"
+                ) {
+                  return undefined;
+                }
+                throw e;
+              }
+            })()}
             className={classNames(
               "__wab_instance",
               sty.httpRestApiFetcher__x8C9
@@ -143,9 +166,9 @@ function PlasmicHomepage__RenderFunc(props) {
             loadingDisplay={
               <DataCtxReader__>{$ctx => "Loading..."}</DataCtxReader__>
             }
-            method={"GET"}
+            method={"POST"}
             noLayout={false}
-            url={"https://api.github.com/users/plasmicapp/repos"}
+            url={"http://localhost:8080/uid"}
           >
             <DataCtxReader__>
               {$ctx => (
@@ -168,6 +191,81 @@ function PlasmicHomepage__RenderFunc(props) {
                         "numberInput",
                         "value"
                       ]).apply(null, eventArgs);
+                      (async value => {
+                        const $steps = {};
+                        $steps["updateNumberInputValue"] = true
+                          ? (() => {
+                              const actionArgs = {
+                                variable: {
+                                  objRoot: $state,
+                                  variablePath: ["numberInput", "value"]
+                                },
+                                operation: 0
+                              };
+                              return (({
+                                variable,
+                                value,
+                                startIndex,
+                                deleteCount
+                              }) => {
+                                if (!variable) {
+                                  return;
+                                }
+                                const { objRoot, variablePath } = variable;
+                                $stateSet(objRoot, variablePath, value);
+                                return value;
+                              })?.apply(null, [actionArgs]);
+                            })()
+                          : undefined;
+                        if (
+                          $steps["updateNumberInputValue"] != null &&
+                          typeof $steps["updateNumberInputValue"] ===
+                            "object" &&
+                          typeof $steps["updateNumberInputValue"].then ===
+                            "function"
+                        ) {
+                          $steps["updateNumberInputValue"] = await $steps[
+                            "updateNumberInputValue"
+                          ];
+                        }
+                      }).apply(null, eventArgs);
+                    }}
+                    onPressEnter={async event => {
+                      const $steps = {};
+                      $steps["updateNumberInputValue"] = true
+                        ? (() => {
+                            const actionArgs = {
+                              variable: {
+                                objRoot: $state,
+                                variablePath: ["numberInput", "value"]
+                              },
+                              operation: 0
+                            };
+                            return (({
+                              variable,
+                              value,
+                              startIndex,
+                              deleteCount
+                            }) => {
+                              if (!variable) {
+                                return;
+                              }
+                              const { objRoot, variablePath } = variable;
+                              $stateSet(objRoot, variablePath, value);
+                              return value;
+                            })?.apply(null, [actionArgs]);
+                          })()
+                        : undefined;
+                      if (
+                        $steps["updateNumberInputValue"] != null &&
+                        typeof $steps["updateNumberInputValue"] === "object" &&
+                        typeof $steps["updateNumberInputValue"].then ===
+                          "function"
+                      ) {
+                        $steps["updateNumberInputValue"] = await $steps[
+                          "updateNumberInputValue"
+                        ];
+                      }
                     }}
                     type={"number"}
                     value={generateStateValueProp($state, [
@@ -187,10 +285,102 @@ function PlasmicHomepage__RenderFunc(props) {
                           projectcss.__wab_text,
                           sty.text___0Y5Il
                         )}
+                        onClick={async event => {
+                          const $steps = {};
+                          $steps["httpPost"] = true
+                            ? (() => {
+                                const actionArgs = {
+                                  dataOp: {
+                                    sourceId: "4ofEH9vRtXh76FCWTAXSqM",
+                                    opId: "8abea340-5afb-484d-b163-76967a829224",
+                                    userArgs: {
+                                      body: [$state.numberInput.value]
+                                    },
+                                    cacheKey: null,
+                                    invalidatedKeys: ["plasmic_refresh_all"],
+                                    roleId: null
+                                  }
+                                };
+                                return (async ({ dataOp, continueOnError }) => {
+                                  try {
+                                    const response = await executePlasmicDataOp(
+                                      dataOp,
+                                      {
+                                        userAuthToken:
+                                          dataSourcesCtx?.userAuthToken,
+                                        user: dataSourcesCtx?.user
+                                      }
+                                    );
+                                    await plasmicInvalidate(
+                                      dataOp.invalidatedKeys
+                                    );
+                                    return response;
+                                  } catch (e) {
+                                    if (!continueOnError) {
+                                      throw e;
+                                    }
+                                    return e;
+                                  }
+                                })?.apply(null, [actionArgs]);
+                              })()
+                            : undefined;
+                          if (
+                            $steps["httpPost"] != null &&
+                            typeof $steps["httpPost"] === "object" &&
+                            typeof $steps["httpPost"].then === "function"
+                          ) {
+                            $steps["httpPost"] = await $steps["httpPost"];
+                          }
+                        }}
                       >
                         {"invoeren"}
                       </div>
                     }
+                    onClick={async event => {
+                      const $steps = {};
+                      $steps["httpPost"] = true
+                        ? (() => {
+                            const actionArgs = {
+                              dataOp: {
+                                sourceId: "4ofEH9vRtXh76FCWTAXSqM",
+                                opId: "6e885ec1-ae64-4870-bc18-0f43c115c9c4",
+                                userArgs: {
+                                  body: [$state.numberInput.value]
+                                },
+                                cacheKey: null,
+                                invalidatedKeys: ["plasmic_refresh_all"],
+                                roleId: null
+                              }
+                            };
+                            return (async ({ dataOp, continueOnError }) => {
+                              try {
+                                const response = await executePlasmicDataOp(
+                                  dataOp,
+                                  {
+                                    userAuthToken:
+                                      dataSourcesCtx?.userAuthToken,
+                                    user: dataSourcesCtx?.user
+                                  }
+                                );
+                                await plasmicInvalidate(dataOp.invalidatedKeys);
+                                return response;
+                              } catch (e) {
+                                if (!continueOnError) {
+                                  throw e;
+                                }
+                                return e;
+                              }
+                            })?.apply(null, [actionArgs]);
+                          })()
+                        : undefined;
+                      if (
+                        $steps["httpPost"] != null &&
+                        typeof $steps["httpPost"] === "object" &&
+                        typeof $steps["httpPost"].then === "function"
+                      ) {
+                        $steps["httpPost"] = await $steps["httpPost"];
+                      }
+                    }}
                   />
                 </div>
               )}
