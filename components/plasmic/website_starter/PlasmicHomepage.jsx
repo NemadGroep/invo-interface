@@ -14,10 +14,21 @@ import { useRouter } from "next/router";
 import {
   classNames,
   createPlasmicElementProxy,
-  deriveRenderOpts
+  deriveRenderOpts,
+  generateStateOnChangeProp,
+  generateStateValueProp,
+  useDollarState
 } from "@plasmicapp/react-web";
-import { useDataEnv } from "@plasmicapp/react-web/lib/host";
+import {
+  DataCtxReader as DataCtxReader__,
+  useDataEnv
+} from "@plasmicapp/react-web/lib/host";
+import { DataFetcher } from "@plasmicpkgs/plasmic-query";
+import { AntdInputNumber } from "@plasmicpkgs/antd5/skinny/registerInput";
+import Button from "../../Button"; // plasmic-import: y8cRQpExkeMy/component
 import "@plasmicapp/react-web/lib/plasmic.css";
+import plasmic_antd_5_hostless_css from "../antd_5_hostless/plasmic.module.css"; // plasmic-import: ohDidvG9XsCeFumugENU3J/projectcss
+import plasmic_plasmic_rich_components_css from "../plasmic_rich_components/plasmic.module.css"; // plasmic-import: jkU633o1Cz7HrJdwdxhVHk/projectcss
 import projectcss from "./plasmic.module.css"; // plasmic-import: gVh4qvKgAvpoYwEsjKrFRZ/projectcss
 import sty from "./PlasmicHomepage.module.css"; // plasmic-import: _UyBW-WtH69k/css
 
@@ -56,6 +67,24 @@ function PlasmicHomepage__RenderFunc(props) {
   const $ctx = useDataEnv?.() || {};
   const refsRef = React.useRef({});
   const $refs = refsRef.current;
+  const stateSpecs = React.useMemo(
+    () => [
+      {
+        path: "numberInput.value",
+        type: "private",
+        variableType: "text",
+        initFunc: ({ $props, $state, $queries, $ctx }) => undefined
+      }
+    ],
+
+    [$props, $ctx, $refs]
+  );
+  const $state = useDollarState(stateSpecs, {
+    $props,
+    $ctx,
+    $queries: {},
+    $refs
+  });
   return (
     <React.Fragment>
       <Head></Head>
@@ -78,6 +107,8 @@ function PlasmicHomepage__RenderFunc(props) {
             projectcss.plasmic_default_styles,
             projectcss.plasmic_mixins,
             projectcss.plasmic_tokens,
+            plasmic_antd_5_hostless_css.plasmic_tokens,
+            plasmic_plasmic_rich_components_css.plasmic_tokens,
             sty.root
           )}
         >
@@ -96,37 +127,267 @@ function PlasmicHomepage__RenderFunc(props) {
                 sty.h1
               )}
             >
-              {"Welcome to your first page."}
+              {"Wachtrij"}
             </h1>
-            <div
-              data-plasmic-name={"text"}
-              data-plasmic-override={overrides.text}
-              className={classNames(
-                projectcss.all,
-                projectcss.__wab_text,
-                sty.text
-              )}
-            >
-              <React.Fragment>
-                <React.Fragment>
-                  {
-                    "If you haven't already done so, go back and learn the basics by going through the Plasmic Levels tutorial.\n\nIt's always easier to start from examples! Add a new page using a template\u2014do this from the list of pages in the top toolbar.\n\nOr press the big blue + button to start inserting items into this page.\n\nIntegrate this project into your codebase\u2014press the "
-                  }
-                </React.Fragment>
-                <span
-                  className={"plasmic_default__all plasmic_default__span"}
-                  style={{ fontWeight: 700 }}
-                >
-                  {"Code"}
-                </span>
-                <React.Fragment>
-                  {
-                    " button in the top right and follow the quickstart instructions.\n\nJoin our Slack community (icon in bottom left) for help any time."
-                  }
-                </React.Fragment>
-              </React.Fragment>
-            </div>
           </section>
+          <DataFetcher
+            className={classNames(
+              "__wab_instance",
+              sty.httpRestApiFetcher__x8C9
+            )}
+            dataName={"fetchedData"}
+            errorDisplay={
+              <DataCtxReader__>{$ctx => "Error fetching data"}</DataCtxReader__>
+            }
+            errorName={"fetchError"}
+            loadingDisplay={
+              <DataCtxReader__>{$ctx => "Loading..."}</DataCtxReader__>
+            }
+            method={"GET"}
+            noLayout={false}
+            url={"https://api.github.com/users/plasmicapp/repos"}
+          >
+            <DataCtxReader__>
+              {$ctx => (
+                <div className={classNames(projectcss.all, sty.freeBox__nKxsG)}>
+                  <div
+                    className={classNames(
+                      projectcss.all,
+                      projectcss.__wab_text,
+                      sty.text__vnb4Q
+                    )}
+                  >
+                    {"Hoeveel voorgaande e-mails meescannen"}
+                  </div>
+                  <AntdInputNumber
+                    data-plasmic-name={"numberInput"}
+                    data-plasmic-override={overrides.numberInput}
+                    className={classNames("__wab_instance", sty.numberInput)}
+                    onChange={async (...eventArgs) => {
+                      generateStateOnChangeProp($state, [
+                        "numberInput",
+                        "value"
+                      ]).apply(null, eventArgs);
+                    }}
+                    type={"number"}
+                    value={generateStateValueProp($state, [
+                      "numberInput",
+                      "value"
+                    ])}
+                  />
+
+                  <Button
+                    data-plasmic-name={"button"}
+                    data-plasmic-override={overrides.button}
+                    className={classNames("__wab_instance", sty.button)}
+                    label={
+                      <div
+                        className={classNames(
+                          projectcss.all,
+                          projectcss.__wab_text,
+                          sty.text___0Y5Il
+                        )}
+                      >
+                        {"invoeren"}
+                      </div>
+                    }
+                  />
+                </div>
+              )}
+            </DataCtxReader__>
+          </DataFetcher>
+          <DataFetcher
+            className={classNames(
+              "__wab_instance",
+              sty.httpRestApiFetcher__yJr2G
+            )}
+            dataName={"fetchedData"}
+            errorDisplay={
+              <DataCtxReader__>{$ctx => "Error fetching data"}</DataCtxReader__>
+            }
+            errorName={"fetchError"}
+            loadingDisplay={
+              <DataCtxReader__>{$ctx => "Loading..."}</DataCtxReader__>
+            }
+            method={"GET"}
+            noLayout={false}
+            url={"http://localhost:8080/metadata"}
+          >
+            <DataCtxReader__>
+              {$ctx =>
+                (_par => (!_par ? [] : Array.isArray(_par) ? _par : [_par]))(
+                  (() => {
+                    try {
+                      return $ctx.fetchedData;
+                    } catch (e) {
+                      if (
+                        e instanceof TypeError ||
+                        e?.plasmicType === "PlasmicUndefinedDataError"
+                      ) {
+                        return [];
+                      }
+                      throw e;
+                    }
+                  })()
+                ).map((__plasmic_item_0, __plasmic_idx_0) => {
+                  const currentItem = __plasmic_item_0;
+                  const currentIndex = __plasmic_idx_0;
+                  return (
+                    <div
+                      className={classNames(projectcss.all, sty.freeBox__ecwHa)}
+                      key={currentIndex}
+                    >
+                      <div
+                        className={classNames(
+                          projectcss.all,
+                          sty.freeBox__fdMX
+                        )}
+                      >
+                        {(_par =>
+                          !_par ? [] : Array.isArray(_par) ? _par : [_par])(
+                          (() => {
+                            try {
+                              return currentItem.uid;
+                            } catch (e) {
+                              if (
+                                e instanceof TypeError ||
+                                e?.plasmicType === "PlasmicUndefinedDataError"
+                              ) {
+                                return [];
+                              }
+                              throw e;
+                            }
+                          })()
+                        ).map((__plasmic_item_1, __plasmic_idx_1) => {
+                          const currentItem = __plasmic_item_1;
+                          const currentIndex = __plasmic_idx_1;
+                          return (
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.__wab_text,
+                                sty.text__fyVFa
+                              )}
+                              key={currentIndex}
+                            >
+                              <React.Fragment>
+                                {(() => {
+                                  try {
+                                    return currentItem;
+                                  } catch (e) {
+                                    if (
+                                      e instanceof TypeError ||
+                                      e?.plasmicType ===
+                                        "PlasmicUndefinedDataError"
+                                    ) {
+                                      return "";
+                                    }
+                                    throw e;
+                                  }
+                                })()}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                        {(_par =>
+                          !_par ? [] : Array.isArray(_par) ? _par : [_par])(
+                          (() => {
+                            try {
+                              return currentItem.business;
+                            } catch (e) {
+                              if (
+                                e instanceof TypeError ||
+                                e?.plasmicType === "PlasmicUndefinedDataError"
+                              ) {
+                                return [];
+                              }
+                              throw e;
+                            }
+                          })()
+                        ).map((__plasmic_item_1, __plasmic_idx_1) => {
+                          const currentItem = __plasmic_item_1;
+                          const currentIndex = __plasmic_idx_1;
+                          return (
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.__wab_text,
+                                sty.text__y4FvC
+                              )}
+                              key={currentIndex}
+                            >
+                              <React.Fragment>
+                                {(() => {
+                                  try {
+                                    return currentItem;
+                                  } catch (e) {
+                                    if (
+                                      e instanceof TypeError ||
+                                      e?.plasmicType ===
+                                        "PlasmicUndefinedDataError"
+                                    ) {
+                                      return "";
+                                    }
+                                    throw e;
+                                  }
+                                })()}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                        {(_par =>
+                          !_par ? [] : Array.isArray(_par) ? _par : [_par])(
+                          (() => {
+                            try {
+                              return currentItem.subject;
+                            } catch (e) {
+                              if (
+                                e instanceof TypeError ||
+                                e?.plasmicType === "PlasmicUndefinedDataError"
+                              ) {
+                                return [];
+                              }
+                              throw e;
+                            }
+                          })()
+                        ).map((__plasmic_item_1, __plasmic_idx_1) => {
+                          const currentItem = __plasmic_item_1;
+                          const currentIndex = __plasmic_idx_1;
+                          return (
+                            <div
+                              className={classNames(
+                                projectcss.all,
+                                projectcss.__wab_text,
+                                sty.text__uRrS1
+                              )}
+                              key={currentIndex}
+                            >
+                              <React.Fragment>
+                                {(() => {
+                                  try {
+                                    return currentItem;
+                                  } catch (e) {
+                                    if (
+                                      e instanceof TypeError ||
+                                      e?.plasmicType ===
+                                        "PlasmicUndefinedDataError"
+                                    ) {
+                                      return "";
+                                    }
+                                    throw e;
+                                  }
+                                })()}
+                              </React.Fragment>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })
+              }
+            </DataCtxReader__>
+          </DataFetcher>
         </div>
       </div>
     </React.Fragment>
@@ -134,10 +395,11 @@ function PlasmicHomepage__RenderFunc(props) {
 }
 
 const PlasmicDescendants = {
-  root: ["root", "section", "h1", "text"],
-  section: ["section", "h1", "text"],
+  root: ["root", "section", "h1", "numberInput", "button"],
+  section: ["section", "h1"],
   h1: ["h1"],
-  text: ["text"]
+  numberInput: ["numberInput"],
+  button: ["button"]
 };
 
 function makeNodeComponent(nodeName) {
@@ -174,7 +436,8 @@ export const PlasmicHomepage = Object.assign(
     // Helper components rendering sub-elements
     section: makeNodeComponent("section"),
     h1: makeNodeComponent("h1"),
-    text: makeNodeComponent("text"),
+    numberInput: makeNodeComponent("numberInput"),
+    button: makeNodeComponent("button"),
     // Metadata about props expected for PlasmicHomepage
     internalVariantProps: PlasmicHomepage__VariantProps,
     internalArgProps: PlasmicHomepage__ArgProps,
